@@ -25,7 +25,7 @@ class BunchOFiles(FileMovieWriter):
         super().__init__(*args, extra_args=(), **kwargs)
 
     def setup(self, fig, dpi, frame_prefix):
-        super().setup(fig, dpi, frame_prefix, clear_temp=False)
+        super().setup(fig, dpi, frame_prefix)
         self.fname_format_str = '%s%%d.%s'
         self.temp_prefix, self.frame_format = self.outfile.split('.')
 
