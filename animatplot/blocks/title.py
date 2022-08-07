@@ -42,14 +42,15 @@ class Title(Block):
             # Filter out only the keyword args which are things to be replaced
             # in the title text
             # Parsing trick from https://stackoverflow.com/questions/25996937/
-            fieldnames = [fname for _, fname, _, _ in
-                          Formatter().parse(text) if fname]
-            replacements = {key: value for key, value in kwargs.items()
-                            if key in fieldnames}
+            fieldnames = [fname for _, fname, _, _ in Formatter().parse(text) if fname]
+            replacements = {
+                key: value for key, value in kwargs.items() if key in fieldnames
+            }
 
             # Any leftover kwargs are assumed to be for matplotlib
-            mpl_kwargs = {kwarg: kwargs[kwarg] for kwarg in kwargs
-                          if kwarg not in fieldnames}
+            mpl_kwargs = {
+                kwarg: kwargs[kwarg] for kwarg in kwargs if kwarg not in fieldnames
+            }
             if mpl_kwargs:
                 self._mpl_kwargs = mpl_kwargs
             else:
@@ -57,18 +58,20 @@ class Title(Block):
 
             if replacements:
                 self._length = len(list(replacements.values())[0])
-                if not all(len(array) == self._length for array
-                           in replacements.values()):
-                    raise ValueError("Not all arrays of replacement values are"
-                                     " the same length")
+                if not all(
+                    len(array) == self._length for array in replacements.values()
+                ):
+                    raise ValueError(
+                        "Not all arrays of replacement values are" " the same length"
+                    )
             else:
                 self._length = 1
 
             titles = []
             for i in range(self._length):
-                replacements_at_one_time = {replacement: array[i]
-                                            for replacement, array
-                                            in replacements.items()}
+                replacements_at_one_time = {
+                    replacement: array[i] for replacement, array in replacements.items()
+                }
 
                 title = text.format(*args, **replacements_at_one_time)
                 titles.append(title)
@@ -76,15 +79,18 @@ class Title(Block):
 
         elif isinstance(text, list):
             if not all(isinstance(x, str) for x in text):
-                raise TypeError("Not all the elements in the list given as "
-                                "argument text are strings")
+                raise TypeError(
+                    "Not all the elements in the list given as "
+                    "argument text are strings"
+                )
             self._length = len(text)
             self.titles = text
             self._mpl_kwargs = kwargs
 
         else:
-            raise TypeError("argument text must be either a string or a list "
-                            "of strings")
+            raise TypeError(
+                "argument text must be either a string or a list " "of strings"
+            )
 
         # Draw the title for the first frame
         self._update(0)

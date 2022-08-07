@@ -4,8 +4,9 @@ from ..blocks import vector_comp
 import numpy as np
 
 
-def vector_plot(X, Y, U, V, t, skip=5, *, t_axis=0, units='', fps=10,
-                pcolor_kw={}, quiver_kw={}):
+def vector_plot(
+    X, Y, U, V, t, skip=5, *, t_axis=0, units="", fps=10, pcolor_kw={}, quiver_kw={}
+):
     """produces an animation of vector fields
 
     This takes 2D vector field, and plots the magnitude as a pcolomesh, and the
@@ -56,8 +57,9 @@ def vector_plot(X, Y, U, V, t, skip=5, *, t_axis=0, units='', fps=10,
         The timeline that was generated for the animation.
     """
     # plot the magnitude of the vectors as a pcolormesh
-    blocks = vector_comp(X, Y, U, V, skip, t_axis=t_axis,
-                         pcolor_kw=pcolor_kw, quiver_kw=quiver_kw)
+    blocks = vector_comp(
+        X, Y, U, V, skip, t_axis=t_axis, pcolor_kw=pcolor_kw, quiver_kw=quiver_kw
+    )
 
     # create the animation
     timeline = Timeline(t, units=units, fps=fps)

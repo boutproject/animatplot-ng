@@ -42,6 +42,7 @@ class Line(Block):
     this once for each line, and then animate all of the blocks returned by
     passing a list of those blocks to `animatplot.Animation`.
     """
+
     def __init__(self, *args, ax=None, t_axis=0, **kwargs):
 
         super().__init__(ax, t_axis)
@@ -57,19 +58,22 @@ class Line(Block):
         if y is None:
             raise ValueError("Must supply y data to plot")
         y = np.asanyarray(y)
-        if str(y.dtype) == 'object':
+        if str(y.dtype) == "object":
             self.t_axis = 0
 
             # ragged array
             if x is None:
-                raise ValueError("Must specify x data explicitly when passing"
-                                 "a ragged array for y data")
+                raise ValueError(
+                    "Must specify x data explicitly when passing"
+                    "a ragged array for y data"
+                )
 
             x = np.asanyarray(x)
 
             if not all(len(xline) == len(yline) for xline, yline in zip(x, y)):
-                raise ValueError("Length of x & y data must match one another "
-                                 "for every frame")
+                raise ValueError(
+                    "Length of x & y data must match one another " "for every frame"
+                )
 
             self._is_list = True
 
@@ -81,15 +85,17 @@ class Line(Block):
             # x is optional
             shape = list(y.shape)
             shape.remove(y.shape[t_axis])
-            data_length, = shape
+            (data_length,) = shape
             if x is None:
                 x = np.arange(data_length)
             else:
                 x = np.asanyarray(x)
 
-            shape_mismatch = "The dimensions of x must be compatible with " \
-                             "those of y, but the shape of x is {} and the " \
-                             "shape of y is {}".format(x.shape, y.shape)
+            shape_mismatch = (
+                "The dimensions of x must be compatible with "
+                "those of y, but the shape of x is {} and the "
+                "shape of y is {}".format(x.shape, y.shape)
+            )
             if x.ndim == 1:
                 # x is constant over time
                 if len(x) == data_length:
@@ -112,8 +118,7 @@ class Line(Block):
         x_first_frame_data = self.x[frame_slice]
         y_first_frame_data = self.y[frame_slice]
 
-        self.line, = self.ax.plot(x_first_frame_data,
-                                  y_first_frame_data, **kwargs)
+        (self.line,) = self.ax.plot(x_first_frame_data, y_first_frame_data, **kwargs)
 
     def _update(self, frame):
         frame_slice = self._make_slice(frame, dim=2)
@@ -145,6 +150,7 @@ class ParametricLine(Line):
     This block accepts additional keyword arguments to be passed to
     :meth:`matplotlib.axes.Axes.plot`
     """
+
     def __init__(self, x, y, *args, **kwargs):
         x_grid, y_grid = parametric_line(x, y)
         super().__init__(x_grid, y_grid, *args, *kwargs)
@@ -183,26 +189,29 @@ class Scatter(Block):
     This block accepts additional keyword arguments to be passed to
     :meth:`matplotlib.axes.Axes.scatter`
     """
+
     def __init__(self, x, y, s=None, c=None, ax=None, t_axis=0, **kwargs):
         self.x = np.asanyarray(x)
         self.y = np.asanyarray(y)
         if self.x.shape != self.y.shape:
-            raise ValueError("x, y must have the same shape"
-                             "or be lists of the same length")
+            raise ValueError(
+                "x, y must have the same shape" "or be lists of the same length"
+            )
 
         self.c = c
         self.s = self._parse_s(s)
         super().__init__(ax, t_axis)
 
-        self._is_list = (self.x.dtype == 'object')
+        self._is_list = self.x.dtype == "object"
         Slice = self._make_slice(0, 2)
         s_Slice = self._make_s_slice(0, 2)
-        self.scat = self.ax.scatter(self.x[Slice], self.y[Slice],
-                                    self.s[s_Slice], self.c, **kwargs)
+        self.scat = self.ax.scatter(
+            self.x[Slice], self.y[Slice], self.s[s_Slice], self.c, **kwargs
+        )
 
     def _parse_s(self, s):
         s = np.asanyarray(s)
-        self._s_like_x = (s.shape == self.x.shape)
+        self._s_like_x = s.shape == self.x.shape
         if not self._s_like_x:
             if len(s.shape) == 0:
                 s = s[None]

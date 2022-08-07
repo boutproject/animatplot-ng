@@ -32,6 +32,7 @@ class Surface(Block):
     All other keyword arguments get passed to ``ax.plot_surface``
     see :meth:`mpl_toolkits.mplot3d.axes3d.plot_surface` for details.
     """
+
     def __init__(self, *args, ax=None, t_axis=0, fixed_vscale=True, **kwargs):
         self.kwargs = kwargs
 
@@ -43,12 +44,11 @@ class Surface(Block):
         elif len(args) == 3:
             self.X, self.Y, self.C = args
             if len(self.X.shape) not in [1, 2]:
-                raise TypeError('X must be a 1D or 2D arrays')
+                raise TypeError("X must be a 1D or 2D arrays")
             if len(self.Y.shape) not in [1, 2]:
-                raise TypeError('Y must be a 1D or 2D arrays')
+                raise TypeError("Y must be a 1D or 2D arrays")
         else:
-            raise TypeError(
-                'Illegal arguments to Surface; see help(ax.plot_surface)')
+            raise TypeError("Illegal arguments to Surface; see help(ax.plot_surface)")
 
         if self.kwargs.get("color") is None and self.kwargs.get("cmap") is None:
             # No user-specified colors for plot. Need to set to a fixed value to avoid

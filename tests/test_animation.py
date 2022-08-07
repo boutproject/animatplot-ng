@@ -17,13 +17,13 @@ matplotlib.testing.setup()
 
 
 @pytest.mark.xfail
-@animation_compare(baseline_images='Animation/controls', nframes=5, tol=.5)
+@animation_compare(baseline_images="Animation/controls", nframes=5, tol=0.5)
 def test_controls():
     x = np.linspace(0, 1, 5)
-    y = np.sin(np.pi*x)
+    y = np.sin(np.pi * x)
     t = np.linspace(0, 1, 5)
 
-    timeline = amp.Timeline(t, units='s', fps=5)
+    timeline = amp.Timeline(t, units="s", fps=5)
     block = amp.blocks.ParametricLine(x, y)
     block.ax.set_xlim([0, 1])
     block.ax.set_ylim([0, 1])
@@ -34,20 +34,20 @@ def test_controls():
 
 
 def test_save():
-    base = 'tests/output_images/'
+    base = "tests/output_images/"
     if not os.path.exists(base):
         os.mkdir(base)
     x = np.linspace(0, 1, 5)
-    y = np.sin(np.pi*x)
+    y = np.sin(np.pi * x)
 
     block = amp.blocks.ParametricLine(x, y)
     block.ax.set_xlim([0, 1])
     block.ax.set_ylim([0, 1])
 
     anim = amp.Animation([block])
-    anim.save_gif(base+'save')
-    plt.close('all')
-    assert os.path.exists(base+'save.gif')
+    anim.save_gif(base + "save")
+    plt.close("all")
+    assert os.path.exists(base + "save.gif")
 
 
 @pytest.fixture()
@@ -59,6 +59,7 @@ def line_block():
         y_data = np.sin(2 * np.pi * (x_grid + t_grid))
 
         return amp.blocks.Line(x, y_data)
+
     return make_line_block
 
 
@@ -81,6 +82,7 @@ def line_anim():
             anim.controls()
 
         return anim
+
     return make_line_anim
 
 
@@ -110,8 +112,7 @@ class TestAddBlocks:
         assert len(anim.blocks) == 2
         for actual in anim.blocks:
             assert len(actual) == 5
-            npt.assert_equal(actual.line.get_xdata(),
-                             np.linspace(0, 1, 10))
+            npt.assert_equal(actual.line.get_xdata(), np.linspace(0, 1, 10))
 
     def test_wrong_length_block(self, line_block):
         anim = amp.Animation([line_block()])
@@ -123,7 +124,7 @@ class TestAddBlocks:
         anim = amp.Animation([line_block()])
 
         with pytest.raises(TypeError):
-            anim.add('not a block')
+            anim.add("not a block")
 
 
 class TestAddAnimations:
@@ -143,7 +144,7 @@ class TestAddAnimations:
     def test_add_animations_both_with_timelines(self, line_anim):
         anim = line_anim(timeline=True)
         anim2 = line_anim()
-        t = 10*np.arange(5)
+        t = 10 * np.arange(5)
         anim2.timeline = amp.Timeline(t)
 
         anim.add(anim2)

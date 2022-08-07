@@ -9,11 +9,13 @@ def test_parametric_line():
 
     X_test, Y_test = util.parametric_line(x, y)
     X_valid = np.array(
-        [[0, np.nan, np.nan, np.nan, np.nan],
-         [0, 1,      np.nan, np.nan, np.nan],
-         [0, 1,      2,      np.nan, np.nan],
-         [0, 1,      2,      3,      np.nan],
-         [0, 1,      2,      3,      4]]
+        [
+            [0, np.nan, np.nan, np.nan, np.nan],
+            [0, 1, np.nan, np.nan, np.nan],
+            [0, 1, 2, np.nan, np.nan],
+            [0, 1, 2, 3, np.nan],
+            [0, 1, 2, 3, 4],
+        ]
     )
     Y_valid = X_valid**2
 
