@@ -17,6 +17,7 @@ class Block:
     ax : matplotlib.axes.Axes
         The matplotlib axes that the block is attached to.
     """
+
     def __init__(self, ax=None, t_axis=None):
         self.ax = ax if ax is not None else plt.gca()
         self.t_axis = t_axis
@@ -44,6 +45,6 @@ class Block:
         """A helper function to slice arrays or lists"""
         if self._is_list:
             return i
-        Slice = [slice(None)]*dim
+        Slice = [slice(None)] * dim
         Slice[self.t_axis] = i
         return tuple(Slice)

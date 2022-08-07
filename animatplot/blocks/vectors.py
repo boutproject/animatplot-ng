@@ -36,6 +36,7 @@ class Quiver(Block):
     This block accepts additional keyword arguments to be passed to
     :meth:`matplotlib.axes.Axes.quiver`
     """
+
     def __init__(self, X, Y, U, V, ax=None, t_axis=0, **kwargs):
         self.X = X
         self.Y = Y
@@ -52,9 +53,7 @@ class Quiver(Block):
         self._is_list = isinstance(U, list)
 
         Slice = self._make_slice(0, self._dim)
-        self.Q = self.ax.quiver(self.X, self.Y,
-                                self.U[Slice], self.V[Slice],
-                                **kwargs)
+        self.Q = self.ax.quiver(self.X, self.Y, self.U[Slice], self.V[Slice], **kwargs)
 
     def _update(self, i):
         Slice = self._make_slice(i, self._dim)
@@ -108,19 +107,23 @@ def vector_comp(X, Y, U, V, skip=5, *, t_axis=0, pcolor_kw={}, quiver_kw={}):
         contains a Pcolorblock, and a Quiver block in that order.
     """
     # plot the magnitude of the vectors as a pcolormesh
-    magnitude = np.sqrt(U**2+V**2)
+    magnitude = np.sqrt(U**2 + V**2)
     pcolor_block = Pcolormesh(X, Y, magnitude, t_axis=t_axis, **pcolor_kw)
 
     # use a subset of the data to plot the arrows as a quiver plot.
-    xy_slice = tuple([slice(None, None, skip)]*len(X.shape))
+    xy_slice = tuple([slice(None, None, skip)] * len(X.shape))
 
-    uv_slice = [slice(None, None, skip)]*len(U.shape)
+    uv_slice = [slice(None, None, skip)] * len(U.shape)
     uv_slice[t_axis] = slice(None)
     uv_slice = tuple(uv_slice)
 
-    quiver_block = Quiver(X[xy_slice], Y[xy_slice],
-                          U[uv_slice]/magnitude[uv_slice],
-                          V[uv_slice]/magnitude[uv_slice],
-                          t_axis=t_axis, **quiver_kw)
+    quiver_block = Quiver(
+        X[xy_slice],
+        Y[xy_slice],
+        U[uv_slice] / magnitude[uv_slice],
+        V[uv_slice] / magnitude[uv_slice],
+        t_axis=t_axis,
+        **quiver_kw
+    )
 
     return [pcolor_block, quiver_block]

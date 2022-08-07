@@ -27,6 +27,7 @@ class Update(Block):
     ax : matplotlib.axes.Axes
         The matplotlib axes to which the block is attached.
     """
+
     def __init__(self, func, length, fargs=[], ax=None):
         self.func = func
         self.length = length
@@ -71,6 +72,7 @@ class Nuke(Update):
     ax : matplotlib.axes.Axes
         The matplotlib axes to which the block is attached.
     """
+
     def _update(self, i):
         self.ax.clear()
         self.func(i, *self.fargs)

@@ -18,13 +18,16 @@ class Timeline:
     log : bool, optional
         Displays the time scale logarithmically (base 10). Defaults to False.
     """
-    def __init__(self, t, units='', fps=10, log=False):
+
+    def __init__(self, t, units="", fps=10, log=False):
         t = np.asanyarray(t)
         if len(t.shape) > 1:
             self.t = demeshgrid(t)
             if self.t is None:
-                raise ValueError("Unable to interpret time values."
-                                 "Please try passing a 1D array instead.")
+                raise ValueError(
+                    "Unable to interpret time values."
+                    "Please try passing a 1D array instead."
+                )
         else:
             self.t = t
 
@@ -44,8 +47,9 @@ class Timeline:
     def __repr__(self):
         time = repr(self.t)
         units = repr(self.units)
-        return "animatplot.animation.Timeline(t={}, units={}, fps={})"\
-            .format(time, units, self.fps)
+        return "animatplot.animation.Timeline(t={}, units={}, fps={})".format(
+            time, units, self.fps
+        )
 
     def __len__(self):
         return self._len

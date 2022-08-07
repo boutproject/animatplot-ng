@@ -28,6 +28,7 @@ class Pcolormesh(Block):
     All other keyword arguments get passed to ``axis.pcolormesh``
     see :meth:`matplotlib.axes.Axes.pcolormesh` for details.
     """
+
     def __init__(self, *args, ax=None, t_axis=0, **kwargs):
         if len(args) == 1:
             self.C = args[0]
@@ -36,12 +37,11 @@ class Pcolormesh(Block):
             self.X, self.Y, self.C = args
             self._arg_len = 3
             if len(self.X.shape) not in [1, 2]:
-                raise TypeError('X must be a 1D or 2D arrays')
+                raise TypeError("X must be a 1D or 2D arrays")
             if len(self.Y.shape) not in [1, 2]:
-                raise TypeError('Y must be a 1D or 2D arrays')
+                raise TypeError("Y must be a 1D or 2D arrays")
         else:
-            raise TypeError(
-                'Illegal arguments to pcolormesh; see help(pcolormesh)')
+            raise TypeError("Illegal arguments to pcolormesh; see help(pcolormesh)")
 
         super().__init__(ax, t_axis)
 
@@ -53,7 +53,7 @@ class Pcolormesh(Block):
         # replicate matplotlib logic for setting default shading value because
         # matplotlib resets the _shading member variable of the QuadMesh to "flat" after
         # interpolating X and Y to corner positions
-        self. shading = kwargs.get("shading", plt.rcParams.get("pcolor.shading", "flat"))
+        self.shading = kwargs.get("shading", plt.rcParams.get("pcolor.shading", "flat"))
         Nx = self.X.shape[-1]
         Ny = self.Y.shape[0]
         if self.shading == "auto":
@@ -87,7 +87,7 @@ class Pcolormesh(Block):
     def _make_pcolormesh_flat_slice(self, i, dim):
         if self._is_list:
             return i
-        Slice = [slice(-1)]*3  # weird thing to make animation work
+        Slice = [slice(-1)] * 3  # weird thing to make animation work
         Slice[self.t_axis] = i
         return tuple(Slice)
 
@@ -120,6 +120,7 @@ class Imshow(Block):
     This block accepts additional keyword arguments to be passed to
     :meth:`matplotlib.axes.Axes.imshow`
     """
+
     def __init__(self, images, ax=None, t_axis=0, **kwargs):
         self.ims = np.asanyarray(images)
         super().__init__(ax, t_axis)
