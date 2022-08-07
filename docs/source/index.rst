@@ -36,5 +36,5 @@ animatplot
 
 
 .. Links
-.. _`Github`: http://github.com/t-makaro/animatplot
+.. _`Github`: http://github.com/boutproject/animatplot-ng
 .. _`matplotlib`: https://matplotlib.org/

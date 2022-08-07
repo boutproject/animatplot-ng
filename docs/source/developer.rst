@@ -12,7 +12,7 @@ Install
 -------
 Clone and install the repository::
 
-    git clone https://github.com/t-makaro/animatplot.git
+    git clone https://github.com/boutproject/animatplot-ng.git
     cd animatplot
     pip install -e .
 
