@@ -3,6 +3,7 @@ import numpy as np
 import numpy.testing as npt
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import packaging.version
 
 import pytest
 
@@ -219,6 +220,70 @@ class TestComparisons:
         block = amp.blocks.Pcolormesh(X[:, :, 0], Y[:, :, 0], Z, t_axis=2)
         return amp.Animation([block])
 
+    @animation_compare(baseline_images='Blocks/Pcolormesh_corner', nframes=3)
+    def test_Pcolormesh_corner_positions(self):
+        # Test with size of Z being (nx-1)*(ny-1) like matplotlib expects for 'flat'
+        # shading
+        x = np.linspace(-2*np.pi, 2*np.pi, 10)
+        t = np.linspace(0, 2*np.pi, 3)
+
+        X, Y, T = np.meshgrid(x, x, t)
+        Z = np.sin(X**2+Y**2-T)[:-1, :-1, :]
+
+        block = amp.blocks.Pcolormesh(X[:, :, 0], Y[:, :, 0], Z, t_axis=2)
+        return amp.Animation([block])
+
+    @pytest.mark.skipif(
+        packaging.version.parse(mpl.__version__) < packaging.version.parse("3.3.0"),
+        reason="matplotlib version too low - does not have shading='nearest'"
+    )
+    @animation_compare(baseline_images='Blocks/Pcolormesh_nearest', nframes=3)
+    def test_Pcolormesh_nearest(self):
+        x = np.linspace(-2*np.pi, 2*np.pi, 100)
+        t = np.linspace(0, 2*np.pi, 3)
+
+        X, Y, T = np.meshgrid(x, x, t)
+        Z = np.sin(X**2+Y**2-T)
+
+        block = amp.blocks.Pcolormesh(
+            X[:, :, 0], Y[:, :, 0], Z, t_axis=2, shading="nearest"
+        )
+        return amp.Animation([block])
+
+    @pytest.mark.skipif(
+        packaging.version.parse(mpl.__version__) < packaging.version.parse("3.3.0"),
+        reason="matplotlib version too low - does not have shading='nearest'"
+    )
+    @animation_compare(baseline_images='Blocks/Pcolormesh_auto', nframes=3)
+    def test_Pcolormesh_nearest(self):
+        x = np.linspace(-2*np.pi, 2*np.pi, 10)
+        t = np.linspace(0, 2*np.pi, 3)
+
+        X, Y, T = np.meshgrid(x, x, t)
+        Z = np.sin(X**2+Y**2-T)
+
+        block = amp.blocks.Pcolormesh(
+            X[:, :, 0], Y[:, :, 0], Z, t_axis=2, shading="auto"
+        )
+        return amp.Animation([block])
+
+    @pytest.mark.skipif(
+        packaging.version.parse(mpl.__version__) < packaging.version.parse("3.3.0"),
+        reason="matplotlib version too low - shading='gouraud' does not work before 3.3"
+    )
+    @animation_compare(baseline_images='Blocks/Pcolormesh_gouraud', nframes=1)
+    def test_Pcolormesh_gouraud(self):
+        x = np.linspace(-2*np.pi, 2*np.pi, 100)
+        t = np.linspace(0, 2*np.pi, 1)
+
+        X, Y, T = np.meshgrid(x, x, t)
+        Z = np.sin(X**2+Y**2-T)
+
+        block = amp.blocks.Pcolormesh(
+            X[:, :, 0], Y[:, :, 0], Z, t_axis=2, shading="gouraud"
+        )
+        return amp.Animation([block])
+
     @animation_compare(baseline_images='Blocks/Imshow', nframes=3)
     def test_Imshow(self):
         x = np.linspace(0, 1, 10)
@@ -242,6 +307,18 @@ class TestComparisons:
             V.append(X**2+Y**2+i)
 
         block = amp.blocks.Quiver(X, Y, U, V)
+        return amp.Animation([block])
+
+    @animation_compare(baseline_images='Blocks/Surface', nframes=3)
+    def test_Surface(self):
+        x = np.linspace(-2*np.pi, 2*np.pi, 100)
+        t = np.linspace(0, 2*np.pi, 3)
+
+        X, Y, T = np.meshgrid(x, x, t)
+        Z = np.sin(X**2+Y**2-T)
+
+        fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+        block = amp.blocks.Surface(X[:, :, 0], Y[:, :, 0], Z, t_axis=2)
         return amp.Animation([block])
 
     @animation_compare(baseline_images='Blocks/Nuke', nframes=3)
