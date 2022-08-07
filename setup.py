@@ -6,15 +6,9 @@ name = "animatplot"
 with open("README.md") as f:
     long_description = f.read()
 
-here = os.path.abspath(os.path.dirname(__file__))
-
-version_ns = {}
-with open(os.path.join(here, name, "_version.py")) as f:
-    exec(f.read(), {}, version_ns)
-
 setup(
     name=name,
-    version=version_ns["__version__"],
+    use_scm_version=True,
     description="Making animating in matplotlib easy",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -25,6 +19,11 @@ setup(
     packages=["animatplot", "animatplot.animations", "animatplot.blocks"],
     python_requires=">=3.5",
     install_requires=["matplotlib>=2.2"],
+    setup_requires=[
+        "setuptools>=42",
+        "setuptools_scm[toml]>=3.4",
+        "setuptools_scm_git_archive",
+    ],
     classifiers=[
         "Intended Audience :: Education",
         "Intended Audience :: Science/Research",
