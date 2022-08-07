@@ -1,7 +1,7 @@
 import os
 from setuptools import setup
 
-name = "animatplot"
+name = "animatplot-ng"
 
 with open("README.md") as f:
     long_description = f.read()
