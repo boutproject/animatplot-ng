@@ -38,7 +38,6 @@ class Title(Block):
         super().__init__(ax)
 
         if isinstance(text, str):
-
             # Filter out only the keyword args which are things to be replaced
             # in the title text
             # Parsing trick from https://stackoverflow.com/questions/25996937/
