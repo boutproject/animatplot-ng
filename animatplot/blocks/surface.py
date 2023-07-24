@@ -69,7 +69,9 @@ class Surface(Block):
 
     def _update(self, i):
         Slice = self._make_slice(i, 3)
-        self.ax.collections.clear()
+        # https://stackoverflow.com/a/43081720 also recommends iterating over self.ax.lines
+        for artist in self.ax.collections:
+            artist.remove()
         self.poly = self.ax.plot_surface(self.X, self.Y, self.C[Slice], **self.kwargs)
         return self.poly
 

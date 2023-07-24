@@ -66,7 +66,6 @@ def animation_compare(baseline_images, nframes, fmt=".png", tol=1e-3, remove_tex
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-
             # First close anything from previous tests
             plt.close("all")
 

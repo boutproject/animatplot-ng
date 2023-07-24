@@ -44,7 +44,6 @@ class Line(Block):
     """
 
     def __init__(self, *args, ax=None, t_axis=0, **kwargs):
-
         super().__init__(ax, t_axis)
 
         if len(args) == 1:
