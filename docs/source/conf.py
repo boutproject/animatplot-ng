@@ -31,7 +31,7 @@ with open(_version_py) as f:
     exec(f.read(), {}, version_ns)
 
 # The short X.Y version
-version = "%i.%i" % version_ns["version"][:2]
+version = "%i.%i" % version_ns["version_tuple"][:2]
 # The full version, including alpha/beta/rc tags
 release = version_ns["__version__"]
 
@@ -80,7 +80,7 @@ master_doc = "index"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
