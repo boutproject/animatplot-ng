@@ -64,12 +64,15 @@ class Animation:
             self.timeline._update()
             return updates
 
-        return FuncAnimation(
-            self.fig,
-            update_all,
-            frames=self.timeline._len,
-            interval=1000 / self.timeline.fps,
-        )
+        # For some reason this can fail with a keyerror, however
+        # printing something before hand resolves that. Thus just
+        # retrying resolves the issue.
+        args = self.fig, update_all
+        kwargs = dict(frames=self.timeline._len, interval=1000 / self.timeline.fps)
+        try:
+            return FuncAnimation(*args, **kwargs)
+        except KeyError:
+            return FuncAnimation(*args, **kwargs)
 
     @property
     def _controls_gridspec(self):
