@@ -57,11 +57,12 @@ def _compare_animation(anim, expected, format_, nframes, tol):
         if err:
             import base64
 
+            print("import base64")
             for key in ["actual", "expected"]:
                 err[key] = os.path.relpath(err[key])
                 with open(err[key], "rb") as f:
                     print(
-                        f"Base64 content of {err[key]}\n\n\n\n\n{base64.b64encode(f.read())}\n\n\n"
+                        f"with open(\"{err[key].replace('/','_')}\", \"wb\") as f:\n    f.write(base64.b64decode({base64.b64encode(f.read())}))\n"
                     )
 
             raise ImageComparisonFailure(
