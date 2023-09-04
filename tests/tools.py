@@ -55,8 +55,15 @@ def _compare_animation(anim, expected, format_, nframes, tol):
             raise ImageComparisonFailure("image does not exist: %s" % expected_name)
 
         if err:
+            import base64
+
             for key in ["actual", "expected"]:
                 err[key] = os.path.relpath(err[key])
+                with open(err[key], "rb") as f:
+                    print(
+                        f"Base64 content of {err[key]}\n\n\n\n\n{base64.b64encode(f.read())}\n\n\n"
+                    )
+
             raise ImageComparisonFailure(
                 "images not close (RMS %(rms).3f):\n\t%(actual)s\n\t%(expected)s " % err
             )
