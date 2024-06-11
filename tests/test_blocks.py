@@ -319,6 +319,9 @@ class TestComparisons:
 
     @animation_compare(baseline_images="Blocks/Surface", nframes=3)
     def test_Surface(self):
+        mpl_version = tuple([int(x) for x in mpl._version.version.split(".")[:3]])
+        if mpl_version < (3, 9):
+            pytest.xfail("Updated for MPL 3.9.0")
         x = np.linspace(-2 * np.pi, 2 * np.pi, 100)
         t = np.linspace(0, 2 * np.pi, 3)
 
