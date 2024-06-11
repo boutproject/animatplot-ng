@@ -4,11 +4,6 @@ on:
   # Run each time we push and pull requests
   push:
   pull_request:
-  # Cron job
-  # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/events-that-trigger-workflows#scheduled-events-schedule
-  schedule:
-    # https://crontab.guru/#0_0_1_*_*
-    - cron: "0 0 1 * *"
 
 concurrency:
   group: ${{ github.ref }}
@@ -22,7 +17,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: ['3.9', '3.10', '3.11', '3.12']
         os: [ubuntu-latest]
 
     steps:
@@ -36,19 +31,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install setuptools_scm pytest-cov matplotlib>=2.2 pytest \
-              pillow
-
+          pip install -U pip pytest pytest-cov
           pip install .
 
       - name: Test local run
         run: |
-          pytest -v --cov=./
-
-      # - name: Upload to codecov
-      #   run: |
-      #     pip install codecov
-      #     codecov
+          pytest -v --cov ./
 
   lint:
     runs-on: ubuntu-latest
@@ -59,11 +47,11 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: 3.8
+        python-version: '3.12'
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-    # - name: Lint with flake8
-    #   run: |
-    #     pip install flake8
-    #     flake8 && echo "flake8 successful"
+    - name: Lint with flake8
+      run: |
+        pip install -U flake8
+        flake8 || :
