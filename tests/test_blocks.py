@@ -141,8 +141,7 @@ class TestLineBlock:
         npt.assert_equal(line_block.x, np.array([[1, 2, 3], [1, 2, 3]]))
 
     def test_ragged_list_input(self):
-        npv = tuple([int(x) for x in np.__version__.split(".")[:3]])
-        if npv >= (1, 24):
+        if packaging.version.parse(np.__version__) >= packaging.version.parse("1.24"):
             pytest.skip("numpy to new - will raise error")
         x_data = [np.array([1, 2, 3]), np.array([1, 2, 3, 4])]
         y_data = [np.array([5, 6, 7]), np.array([4, 2, 9, 10])]
@@ -157,8 +156,7 @@ class TestLineBlock:
         assert_jagged_arrays_equal(line_block.y, np.array(y_data))
 
     def test_bad_ragged_list_input(self):
-        npv = tuple([int(x) for x in np.__version__.split(".")[:3]])
-        if npv >= (1, 24):
+        if packaging.version.parse(np.__version__) >= packaging.version.parse("1.24"):
             pytest.skip("numpy to new - will raise error")
         x_data = np.array([np.array([1, 2, 3]), np.array([1, 2, 3, 4])])
         y_data = np.array([np.array([5, 6, 7]), np.array([4, 2, 9, 10, 11])])
@@ -319,8 +317,7 @@ class TestComparisons:
 
     @animation_compare(baseline_images="Blocks/Surface", nframes=3)
     def test_Surface(self):
-        mpl_version = tuple([int(x) for x in mpl._version.version.split(".")[:3]])
-        if mpl_version < (3, 9):
+        if packaging.version.parse(mpl.__version__) < packaging.version.parse("3.9.0"):
             pytest.xfail("Updated for MPL 3.9.0")
         x = np.linspace(-2 * np.pi, 2 * np.pi, 100)
         t = np.linspace(0, 2 * np.pi, 3)
