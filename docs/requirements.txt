@@ -5,3 +5,4 @@ matplotlib>=2.2
 sphinx_rtd_theme
 numpy
 build
+setuptools_scm[toml]>=7
