@@ -1,9 +1,7 @@
 name: Upload Python Package
 
 on:
-  # Only run when a release is created
-  release:
-    types: [created]
+  push
 
 jobs:
   deploy:
@@ -24,4 +22,3 @@ jobs:
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
         python -m build
-        twine upload dist/*
