@@ -26,6 +26,13 @@ author = "Tyler Makaro"
 
 # Find the version number
 _version_py = "../../animatplot/_version.py"
+if not os.path.exists(_version_py):
+    import subprocess
+
+    subprocess.run(
+        "python -m build ../.. --no-isolation --sdist", shell=True, check=False
+    )
+
 version_ns = {}
 with open(_version_py) as f:
     exec(f.read(), {}, version_ns)
