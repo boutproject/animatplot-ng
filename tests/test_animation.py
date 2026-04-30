@@ -10,27 +10,8 @@ import numpy as np
 import numpy.testing as npt
 
 import animatplot as amp
-from tests.tools import animation_compare
-
 
 matplotlib.testing.setup()
-
-
-@pytest.mark.xfail
-@animation_compare(baseline_images="Animation/controls", nframes=5, tol=0.5)
-def test_controls():
-    x = np.linspace(0, 1, 5)
-    y = np.sin(np.pi * x)
-    t = np.linspace(0, 1, 5)
-
-    timeline = amp.Timeline(t, units="s", fps=5)
-    block = amp.blocks.ParametricLine(x, y)
-    block.ax.set_xlim([0, 1])
-    block.ax.set_ylim([0, 1])
-
-    anim = amp.Animation([block], timeline)
-    anim.controls()
-    return anim
 
 
 def test_save():

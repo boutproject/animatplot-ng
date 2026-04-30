@@ -68,25 +68,3 @@ def _compare_animation(anim, expected, format_, nframes, tol):
             raise ImageComparisonFailure(
                 "images not close (RMS %(rms).3f):\n\t%(actual)s\n\t%(expected)s " % err
             )
-
-
-def animation_compare(baseline_images, nframes, fmt=".png", tol=1e-3, remove_text=True):
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            # First close anything from previous tests
-            plt.close("all")
-
-            anim = func(*args, **kwargs)
-            if remove_text:
-                fignum = plt.get_fignums()[0]
-                fig = plt.figure(fignum)
-                remove_ticks_and_titles(fig)
-            try:
-                _compare_animation(anim, baseline_images, fmt, nframes, tol)
-            finally:
-                plt.close("all")
-
-        return wrapper
-
-    return decorator
