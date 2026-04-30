@@ -11,7 +11,6 @@ import numpy.testing as npt
 
 import animatplot as amp
 
-
 matplotlib.testing.setup()
 
 

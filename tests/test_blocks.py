@@ -201,5 +201,3 @@ class TestLineBlock:
         x = np.array([np.arange(5), np.arange(5)])
         line_block = amp.blocks.Line(x, np.random.randn(2, 5), t_axis=1, alpha=0.5)
         assert line_block.line.get_alpha() == 0.5
-
-
